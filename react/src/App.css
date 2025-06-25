@@ -1,0 +1,157 @@
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  /* 可继续补充其他变量 */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 基础样式 */
+.app-container {
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.header {
+  text-align: center;
+  padding: 48px 0 24px 0;
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  color: var(--primary-foreground);
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0 0 12px 0;
+  letter-spacing: 2px;
+}
+
+.header p {
+  font-size: 1.3rem;
+  margin: 0;
+  opacity: 0.92;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  margin-top: 16px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  background: var(--card);
+  border-radius: 32px;
+  box-shadow: 0 2px 16px rgba(106,17,203,0.08);
+  padding: 8px 32px;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-links li a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 8px 20px;
+  border-radius: 24px;
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+
+.nav-links li a:hover, .nav-links li a.active {
+  background: linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%);
+  color: var(--primary-foreground);
+}
+
+.main-content {
+
+  max-width: 900px;  margin: 40px auto;
+}
+
+/* 卡片样式 */
+.card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(106,17,203,0.10);
+  padding: 24px;
+  margin-bottom: 32px;
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 6px 32px rgba(37,117,252,0.18);
+}
+
+.card img {
+  border-radius: 16px;
+  width: 100%;
+  margin: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .main-content {
+    padding: 16px 4px;
+  }
+  .header h1 {
+    font-size: 2rem;
+  }
+  .nav-links {
+    gap: 10px;
+    padding: 6px 8px;
+  }
+}
