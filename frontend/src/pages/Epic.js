@@ -99,7 +99,7 @@ const Epic = () => {
         />
       </div>
 
-      {loading && <div className="loader"><div></div></div>}
+      {loading && <div className="loader" role="status"><div /></div>}
       {error && <div className="error-message">{error}</div>}
       
       {!loading && !error && !images.length && 

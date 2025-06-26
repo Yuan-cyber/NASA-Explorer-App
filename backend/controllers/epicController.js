@@ -11,8 +11,9 @@ exports.getEpic = async (req, res) => {
     const baseUrl = 'https://api.nasa.gov/EPIC/api/natural';
     const apiUrl = queryDate
       ? `${baseUrl}/date/${queryDate}?api_key=${NASA_API_KEY}`
-      : `${baseUrl}/images?api_key=${NASA_API_KEY}`; // Fallback to recent images
+      : `${baseUrl}/images?api_key=${NASA_API_KEY}`;
 
+    console.log(apiUrl);
     const { data } = await axios.get(apiUrl);
 
     // If NASA API returns no data, send an empty array to the front-end

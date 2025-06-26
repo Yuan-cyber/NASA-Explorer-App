@@ -37,6 +37,9 @@ const Apod = () => {
     <div className="card">
       <h2 className="card-title">{apodData.title}</h2>
       <p className="card-subtitle">Astronomy Picture of the Day for {new Date(apodData.date).toLocaleDateString()}</p>
+      
+      <div className="scroll-down-arrow" />
+      
       {apodData.media_type === 'image' ? (
         <img src={apodData.url} alt={apodData.title} className="card-image" />
       ) : (
@@ -47,9 +50,11 @@ const Apod = () => {
           allow="fullscreen"
         />
       )}
-      <p className="card-text">{apodData.explanation}</p>
       {apodData.copyright && <p className="card-info">Copyright: {apodData.copyright}</p>}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+      
+      <p className="card-text">{apodData.explanation}</p>
+      
+       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
         <button
           onClick={handleGeneratePoeticCopy}
           disabled={copyLoading}
@@ -79,6 +84,7 @@ const Apod = () => {
           <div style={{whiteSpace: 'pre-line', textAlign: 'center', maxWidth: 600}}>{poeticCopy}</div>
         </div>
       )}
+
     </div>
   );
 };

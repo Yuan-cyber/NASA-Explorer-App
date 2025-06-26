@@ -5,6 +5,7 @@ import Apod from './pages/Apod';
 import Epic from './pages/Epic';
 import Neows from './pages/Neows';
 import './App.css';
+import { NasaDataProvider } from './context/DataContext';
 
 function NavLinks() {
   const location = useLocation();
@@ -21,23 +22,25 @@ function NavLinks() {
 function App() {
   return (
     <Router>
-      <div className="app-container">
-        <div className="header">
-          <h1>NASA Space Explorer</h1>
-          <p>Discover the wonders of space through NASA's incredible data and imagery</p>
+      <NasaDataProvider>
+        <div className="app-container">
+          <div className="header">
+            <h1>NASA Space Explorer</h1>
+            <p>Discover the wonders of space through NASA's incredible data and imagery</p>
+          </div>
+          <nav className="navbar">
+            <NavLinks />
+          </nav>
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/apod" element={<Apod />} />
+              <Route path="/epic" element={<Epic />} />
+              <Route path="/neows" element={<Neows />} />
+            </Routes>
+          </div>
         </div>
-        <nav className="navbar">
-          <NavLinks />
-        </nav>
-        <div className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/apod" element={<Apod />} />
-            <Route path="/epic" element={<Epic />} />
-            <Route path="/neows" element={<Neows />} />
-          </Routes>
-        </div>
-      </div>
+      </NasaDataProvider>
     </Router>
   );
 }

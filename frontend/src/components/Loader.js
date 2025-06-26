@@ -1,2 +1,2 @@
-const Loader = () => <div className="loader"><div /></div>;
+const Loader = () => <div className="loader" role="status"><div /></div>;
 export default Loader; 

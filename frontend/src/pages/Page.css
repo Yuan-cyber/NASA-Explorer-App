@@ -36,7 +36,7 @@
 .card-info {
   font-size: 0.9rem;
   color: #777;
-  margin-top: 1.5rem;
+  margin-top: 0;
 }
 
 .error-message, .info-message {
@@ -343,6 +343,23 @@
   color: #555;
 }
 
+.scroll-down-arrow {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 0 auto;
+  border-left: 4px solid #a78bfa;
+  border-bottom: 4px solid #a78bfa;
+  transform: rotate(-45deg);
+  animation: arrow-bounce 1.2s infinite;
+  opacity: 0.8;
+}
+
+@keyframes arrow-bounce {
+  0%   { transform: translateY(0) rotate(-45deg);}
+  50%  { transform: translateY(12px) rotate(-45deg);}
+  100% { transform: translateY(0) rotate(-45deg);}
+}
+
 @media (max-width: 768px) {
   .card-title {
     font-size: 1.1rem;
@@ -352,8 +369,6 @@
     margin-bottom: 0.8rem;
   }
   .card-image {
-    margin: 6px 0;
-    border-radius: 8px;
     max-height: 220px;
     object-fit: cover;
   }

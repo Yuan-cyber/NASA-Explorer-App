@@ -76,7 +76,7 @@ const Neows = () => {
           <div className='chart-title'>Near Earth Asteroids per Day</div>
           <div className="click-tip">Click on a date on the curve to see that day's asteroid list.</div>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData} margin={{ left: 10, right: 30, top: 20, bottom: 5 }} onClick={handleChartClick}>
+            <LineChart data={chartData} margin={{ left: 0, right: 30, top: 20, bottom: 5 }} onClick={handleChartClick}>
               <defs>
                 <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#4F8EF7" stopOpacity={0.4}/>
@@ -89,7 +89,7 @@ const Neows = () => {
                   <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#A084E8" floodOpacity="0.25"/>
                 </filter>
               </defs>
-              <XAxis dataKey="date" tick={{ fontSize: 14, fontWeight: 500, fill: '#888' }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="date" tick={{ fontSize: 14, fontWeight: 500, fill: '#888'}} axisLine={false} tickLine={false} />
               <YAxis allowDecimals={false} tick={{ fontSize: 14, fontWeight: 500, fill: '#888' }} axisLine={false} tickLine={false} />
               <CartesianGrid stroke="#eee" strokeDasharray="5 5" vertical={false} />
               <Tooltip />
