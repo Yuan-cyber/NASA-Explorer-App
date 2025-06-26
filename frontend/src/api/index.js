@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api';
+const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 async function fetchWithRetry(url, retries = 2, delay = 500) {
   for (let i = 0; i <= retries; i++) {
