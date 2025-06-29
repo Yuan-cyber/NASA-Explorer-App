@@ -6,8 +6,6 @@ It is suitable for astronomy image sharing, science education, and social media 
 
 🌐 **Live Demo**: https://nasa-explorer-app-frontend.onrender.com/
 
-<img src="./Users/yuanzhiyi/Desktop/NASA/nasa_screenshot1.png" alt="screenshot" width="600"/>
-
 ![nasa_screenshot1](https://github.com/user-attachments/assets/328cea6e-2cce-4777-b935-817672c86196)
 ![nasa_screenshot2](https://github.com/user-attachments/assets/d1ea0d65-d0e3-477f-931b-e5da8b475800)
 
@@ -61,19 +59,22 @@ backend/
 ### Installation
 
 1. Clone the repository
-
+```bash
 git clone https://github.com/Yuan-cyber/NASA-Explorer-App
 cd NASA-Explorer-App
+```
 
 2. Install backend dependencies
-
+```bash
 cd backend
 npm install
+```
 
 3. Install frontend dependencies
-
+```bash
 cd ../frontend
 npm install
+```
 
 4. Configure environment variables
 
@@ -90,17 +91,17 @@ npm install
 ### Running
 
 1. Start the backend
-
+```bash
 cd backend
 npm node index.js
-
+```
 The backend will start on http://localhost:5001 by default.
 
 2. Start the frontend
-
+```bash
 cd ../frontend
 npm start
-
+```
 The frontend will start on http://localhost:3000 by default.
 
 ## Usage
@@ -122,14 +123,16 @@ The frontend will start on http://localhost:3000 by default.
 ## Testing
 
 1. Backend
-
+```bash
 cd backend
 npm test
+```
 
 2. Frontend
-
+```bash
 cd ../frontend
 npm test
+```
 
 ## Error Handling & Edge Cases
 
