@@ -6,6 +6,10 @@ It is suitable for astronomy image sharing, science education, and social media 
 
 🌐 **Live Demo**: https://nasa-explorer-app-frontend.onrender.com/
 
+![nasa_screenshot1](https://github.com/user-attachments/assets/328cea6e-2cce-4777-b935-817672c86196)
+![nasa_screenshot2](https://github.com/user-attachments/assets/d1ea0d65-d0e3-477f-931b-e5da8b475800)
+
+
 ## Features
 
 - **Astronomy Picture of the Day (APOD)**: View daily space imagery with detailed explanations.
