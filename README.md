@@ -4,7 +4,7 @@ This is a full-stack web application for exploring NASA astronomy data (APOD, EP
 
 It is suitable for astronomy image sharing, science education, and social media content creation.
 
-** 🌐 Live Demo**: https://nasa-explorer-app-frontend.onrender.com/
+🌐 **Live Demo**: https://nasa-explorer-app-frontend.onrender.com/
 
 ## Features
 
