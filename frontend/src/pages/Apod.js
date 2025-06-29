@@ -5,12 +5,21 @@ import ErrorMessage from '../components/ErrorMessage';
 import './Page.css';
 import { generatePoeticCopy } from '../api';
 
+/**
+ * APOD page component.
+ * Displays NASA's daily space image or video, explanation, and allows generating poetic copy via AI.
+ */
 const Apod = () => {
+  // Get APOD data and loading/error state from context
   const { apodData, loading, error } = useNasaData();
+  // State for AI-generated poetic copy
   const [poeticCopy, setPoeticCopy] = useState('');
   const [copyLoading, setCopyLoading] = useState(false);
   const [copyError, setCopyError] = useState('');
 
+  /**
+   * Handle click to generate poetic copy using backend AI service
+   */
   const handleGeneratePoeticCopy = async () => {
     setCopyLoading(true);
     setCopyError('');
@@ -29,17 +38,18 @@ const Apod = () => {
     }
   };
 
+  // Show loader or error if needed
   if (loading) return <Loader />;
   if (error) return <ErrorMessage message={error} />;
   if (!apodData) return <ErrorMessage message="No APOD data available." />;
 
   return (
     <div className="card">
+      {/* Title and subtitle */}
       <h2 className="card-title">{apodData.title}</h2>
-      <p className="card-subtitle">Astronomy Picture of the Day for {new Date(apodData.date).toLocaleDateString()}</p>
-      
-      <div className="scroll-down-arrow" />
-      
+      <p className="card-subtitle">Astronomy Picture of the Day for {new Date(apodData.date).toLocaleDateString()}</p>     
+      <div className="scroll-down-arrow" />  
+      {/* Image or video display */}
       {apodData.media_type === 'image' ? (
         <img src={apodData.url} alt={apodData.title} className="card-image" />
       ) : (
@@ -50,10 +60,11 @@ const Apod = () => {
           allow="fullscreen"
         />
       )}
+      {/* Copyright info if available */}
       {apodData.copyright && <p className="card-info">Copyright: {apodData.copyright}</p>}
-      
+      {/* Explanation text */}
       <p className="card-text">{apodData.explanation}</p>
-      
+      {/* AI Poetic Copy button and result */}
        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
         <button
           onClick={handleGeneratePoeticCopy}
@@ -64,7 +75,9 @@ const Apod = () => {
           {copyLoading ? 'Generating...' : '✨Turn This Into Poetry✨'}
         </button>
       </div>
+      {/* Error message for AI copy */}
       {copyError && <div style={{textAlign: 'center', fontSize:'1rem', color: '#6d28d9', marginTop: '8px'}}>{copyError}</div>}
+      {/* Display AI-generated poetic copy if available */}
       {poeticCopy && (
         <div style={{
           marginTop: '24px',

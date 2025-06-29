@@ -5,9 +5,14 @@ import { useNasaData } from '../context/DataContext';
 import { fetchEpic } from '../api';
 import './Page.css';
 
+/** 
+ * Epic page component.
+ */ 
 const Epic = () => {
+  // Get initial EPIC data, loading, and error state from context
   const { epicData: initialEpicData, loading: initialLoading, error: initialError } = useNasaData();
   
+  // Local state for EPIC images, loading, error, and selected date
   const [images, setImages] = useState(initialEpicData || []);
   const [loading, setLoading] = useState(initialLoading);
   const [error, setError] = useState(initialError);
@@ -20,29 +25,28 @@ const Epic = () => {
   const [preloaded, setPreloaded] = useState(false);
   const intervalRef = useRef(null);
 
+  // Fetch EPIC images when selectedDate changes
   useEffect(() => {
-    setImages(initialEpicData || []);
-    setLoading(initialLoading);
-    setError(initialError);
-  }, [initialEpicData, initialLoading, initialError]);
-
-  useEffect(() => {
-    if (images.length > 0 && selectedDate.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)) {
-      return;
-    }
-    
     const dateStr = selectedDate.toISOString().slice(0, 10);
+    console.log('useEffect triggered, selectedDate:', selectedDate, 'dateStr:', dateStr);
     setLoading(true);
     fetchEpic(dateStr)
       .then(res => {
+        console.log('fetchEpic result:', res.data);
         setImages(res.data);
       })
       .catch(err => setError("Failed to fetch EPIC images for this date."))
       .finally(() => setLoading(false));
   }, [selectedDate]);
 
+  // Preload all images for animation
   useEffect(() => {
-    if (images.length > 0) {
+    if (images.length === 0) {
+      setPreloaded(true);
+      return;
+    }
+    setPreloaded(false); 
+    
       let loadedCount = 0;
       images.forEach(imgData => {
         const img = new Image();
@@ -54,9 +58,9 @@ const Epic = () => {
           }
         };
       });
-    }
   }, [images]);
 
+  // Animation interval logic: cycles through images if animating
   useEffect(() => {
     if (isAnimating && showPlayer) {
       intervalRef.current = setInterval(() => {
@@ -68,16 +72,19 @@ const Epic = () => {
     return () => clearInterval(intervalRef.current);
   }, [isAnimating, showPlayer, images.length]);
 
+  // Start animation: show player and begin cycling images
   const startAnimation = () => {
     if (!images.length || !preloaded) return;
     setShowPlayer(true);
     setIsAnimating(true);
   };
   
+  // Pause or resume animation
   const togglePause = () => {
     setIsAnimating(prev => !prev);
   };
 
+  // Reset animation to initial state
   const resetAnimation = () => {
     setShowPlayer(false);
     setIsAnimating(false);
@@ -85,7 +92,7 @@ const Epic = () => {
   };
 
   return (
-    <div className="card epic-card">
+    <div className="epic-card">
       <h2 className="card-title">Earth Polychromatic Imaging Camera</h2>
       <div className="date-picker-container">
         <label htmlFor="epic-datepicker">Select a date:</label>
@@ -99,13 +106,15 @@ const Epic = () => {
         />
       </div>
 
-      {loading && <div className="loader" role="status"><div /></div>}
+      {loading && <div className="loader" role="status"><div></div></div>}
       {error && <div className="error-message">{error}</div>}
       
+      {/* No images info */}
       {!loading && !error && !images.length && 
-        <div className="info-message">No images available for this date.</div>
+        <div className="info-message"> 🛰️ No EPIC images were taken on this day. Try another date!</div>
       }
 
+      {/* Image grid and animation controls */}
       {!showPlayer ? (
         <>
           <div className="animation-controls">
@@ -117,6 +126,7 @@ const Epic = () => {
               {preloaded ? 'Animate' : 'Loading Images...'}
             </button>
           </div>
+          {/* Show image grid if images are available */}
           {!showPlayer && images.length > 0 && (
             <div className="image-grid">
               {images.map(img => (
@@ -141,6 +151,7 @@ const Epic = () => {
               Reset
             </button>
           </div>
+          {/* Animation player: shows current image and caption */}
           <div className="animation-player">
             <img src={images[currentImageIndex].url} alt={images[currentImageIndex].caption} />
             <p>{images[currentImageIndex].caption}</p>

@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -16,5 +15,4 @@ app.use('/api/epic', require('./routes/epic'));
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-  
 });

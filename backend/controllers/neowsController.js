@@ -1,13 +1,27 @@
 const axios = require('axios');
-const NASA_API_KEY = (process.env.NASA_API_KEY || 'DEMO_KEY').trim();
-const NASA_BASE_URL = 'https://api.nasa.gov';
+const { NASA_BASE_URL, NASA_API_KEY } = require('../config');
 
+// Add cache for NEOWS API
+const neowsCache = { data: {}, expires: {} };
+const CACHE_TTL = 3600; // 1 hour
+
+/**
+ * Fetch Near Earth Object Web Service (NeoWs) from NASA API.
+ */
 exports.getNeowsOverview = async (req, res) => {
   try {
+    const now = Date.now();
+    const cacheKey = JSON.stringify(req.query);
+    if (
+      neowsCache.data[cacheKey] &&
+      neowsCache.expires[cacheKey] > now
+    ) {
+      return res.json(neowsCache.data[cacheKey]);
+    }
     const { start_date, end_date, hazardous, min_diameter, max_diameter } = req.query;
     const today = new Date();
-    const end = req.query.end_date || today.toISOString().slice(0, 10);
-    const start = req.query.start_date || new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const end = end_date || today.toISOString().slice(0, 10);
+    const start = start_date || new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
     const url = `${NASA_BASE_URL}/neo/rest/v1/feed?start_date=${start}&end_date=${end}&api_key=${NASA_API_KEY}`;
     console.log('Requesting URL:', url);
@@ -35,6 +49,9 @@ exports.getNeowsOverview = async (req, res) => {
         asteroids: filtered
       };
     }).sort((a, b) => a.date.localeCompare(b.date));
+    // Set cache
+    neowsCache.data[cacheKey] = result;
+    neowsCache.expires[cacheKey] = now + CACHE_TTL * 1000;
     res.json(result);
   } catch (err) {
     console.error('NeoWs API Error:', err.message);
@@ -50,4 +67,6 @@ exports.getAsteroidDetail = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch asteroid detail', message: err.message });
   }
-}; 
+};
+
+exports.neowsCache = neowsCache;

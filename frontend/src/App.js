@@ -39,6 +39,9 @@ function App() {
               <Route path="/neows" element={<Neows />} />
             </Routes>
           </div>
+          <footer className="footer">
+            © NASA Space Explorer 2025. Powered by NASA Open APIs.
+          </footer>
         </div>
       </NasaDataProvider>
     </Router>

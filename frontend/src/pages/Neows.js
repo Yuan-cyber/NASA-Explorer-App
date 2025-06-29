@@ -7,8 +7,14 @@ import ErrorMessage from '../components/ErrorMessage';
 import './Page.css';
 import { getLatestNeowsData } from '../utils/neowsUtils';
 
+/** 
+ * NeoWs page component.
+ */ 
+
+// Colors for pie chart
 const COLORS = ['#b39ddb', '#ffccbc']; 
 
+// Custom dot for line chart
 const CustomDot = (props) => {
   const { cx, cy } = props;
   return (
@@ -25,6 +31,7 @@ const CustomDot = (props) => {
   );
 };
 
+// Main Neows page component
 const Neows = () => {
   const { neowsData, loading, error } = useNasaData();
   const [selectedAsteroid, setSelectedAsteroid] = useState(null);
@@ -39,18 +46,19 @@ const Neows = () => {
     }
   }, [latestDate, selectedDate]);
 
+  // Show loader or error if needed
   if (loading) return <Loader />;
   if (error) return <ErrorMessage message={error} />;
-  // Correct check for the new array data structure
+  // Show error if no data
   if (!neowsData || neowsData.length === 0) return <ErrorMessage message="No NeoWs data available." />;
 
-  // Correctly calculate chart data from the array
+  // Prepare chart data: array of {date, total}
   const chartData = neowsData.map(day => ({
     date: day.date,
     total: day.total,
   })).sort((a, b) => a.date.localeCompare(b.date));
   
-  // Correctly calculate pie data from the array
+  // Prepare pie chart data: hazardous vs non-hazardous
   const totalHazardous = neowsData.reduce((sum, day) => sum + (day.hazardous || 0), 0);
   const totalNonHazardous = neowsData.reduce((sum, day) => sum + ((day.total || 0) - (day.hazardous || 0)), 0);
   
@@ -59,6 +67,7 @@ const Neows = () => {
     { name: 'Non-hazardous', value: totalNonHazardous }
   ];
 
+  // Handle click on line chart: set selected date
   const handleChartClick = (e) => {
     if (e && e.activePayload && e.activePayload.length > 0) {
       const clickedDate = e.activePayload[0].payload.date;
@@ -66,12 +75,14 @@ const Neows = () => {
     }
   };
   
-  // Find the asteroid data for the selected date from the array
+  // Find the asteroid data for the selected date
   const dailyData = neowsData.find(day => day.date === selectedDate)?.asteroids || [];
 
+  // Render NeoWs charts and asteroid list
   return (
     <div className='neows-container'>
       <div className="charts-row">
+        {/* Line chart: daily asteroid count */}
         <div className="chart-card" style={{ flex: 7 }}>
           <div className='chart-title'>Near Earth Asteroids per Day</div>
           <div className="click-tip">Click on a date on the curve to see that day's asteroid list.</div>
@@ -89,7 +100,7 @@ const Neows = () => {
                   <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#A084E8" floodOpacity="0.25"/>
                 </filter>
               </defs>
-              <XAxis dataKey="date" tick={{ fontSize: 14, fontWeight: 500, fill: '#888'}} axisLine={false} tickLine={false} />
+              <XAxis dataKey="date" tick={{ fontSize: 14, fontWeight: 500, fill: '#888' }} axisLine={false} tickLine={false} />
               <YAxis allowDecimals={false} tick={{ fontSize: 14, fontWeight: 500, fill: '#888' }} axisLine={false} tickLine={false} />
               <CartesianGrid stroke="#eee" strokeDasharray="5 5" vertical={false} />
               <Tooltip />
@@ -100,12 +111,13 @@ const Neows = () => {
                 strokeWidth={3}
                 dot={<CustomDot />}
                 activeDot={{ r: 8, stroke: '#A084E8', fill: '#A084E8' }}
-                style={{ filter: 'url(#lineShadow)' }}
+                style={{ filter: "url(#lineShadow)" }} 
               />
               <Area type="monotone" dataKey="total" stroke={false} fill="url(#colorTotal)" />
             </LineChart>
           </ResponsiveContainer>
         </div>
+        {/* Pie chart: hazardous ratio */}
         <div className="chart-card" style={{ flex: 3 }}>
           <div className='chart-title'>Hazardous Ratio in 7 Days</div>
           <ResponsiveContainer width="100%" height={300}>
@@ -137,6 +149,7 @@ const Neows = () => {
         </div>
       </div>
 
+      {/* Asteroid list for selected date */}
       {selectedDate && (
         <div className="day-card">
           <div className="chart-title">Asteroids for {selectedDate}</div>
@@ -163,6 +176,7 @@ const Neows = () => {
         </div>
       )}
       
+      {/* Asteroid detail modal */}
       <AsteroidDetail asteroid={selectedAsteroid} onClose={() => setSelectedAsteroid(null)} />
     </div>
   );

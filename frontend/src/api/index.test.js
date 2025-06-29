@@ -1,13 +1,19 @@
 import axios from 'axios';
 import { fetchApod, fetchEpic, fetchNeows, generatePoeticCopy } from './index';
 
+// Mock axios for all HTTP requests in these tests
 jest.mock('axios');
 
+// Group all API function tests
 describe('API functions', () => {
+  // Clear all mocks after each test to avoid test pollution
   afterEach(() => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test fetchApod returns a real-like APOD object structure
+   */
   it('fetchApod returns real-like data', async () => {
     const apodMock = {
       date: "2025-06-25",
@@ -26,6 +32,9 @@ describe('API functions', () => {
     expect(res.data).toHaveProperty('url');
   });
 
+  /**
+   * Test fetchEpic returns an array of EPIC image objects
+   */
   it('fetchEpic returns real-like array', async () => {
     const epicMock = [
       {
@@ -49,6 +58,9 @@ describe('API functions', () => {
     expect(res.data[0]).toHaveProperty('caption');
   });
 
+  /**
+   * Test fetchNeows returns an array of asteroid day objects
+   */
   it('fetchNeows returns real-like array', async () => {
     const neowsMock = [
       {
@@ -80,6 +92,9 @@ describe('API functions', () => {
     expect(res.data[0].asteroids[0]).toHaveProperty('estimated_diameter');
   });
 
+  /**
+   * Test generatePoeticCopy returns poeticCopy string on success
+   */
   it('generatePoeticCopy returns poeticCopy on success', async () => {
     axios.post.mockResolvedValue({ data: { poeticCopy: 'A poetic line about the universe.' } });
     const res = await generatePoeticCopy('test explanation');
@@ -87,6 +102,9 @@ describe('API functions', () => {
     expect(axios.post).toHaveBeenCalledWith('http://localhost:5001/api/apod/poetic-copy', { explanation: 'test explanation' });
   });
 
+  /**
+   * Test generatePoeticCopy throws error if no poeticCopy is returned
+   */
   it('generatePoeticCopy throws error if no poeticCopy', async () => {
     axios.post.mockResolvedValue({ data: { error: 'AI error' } });
     await expect(generatePoeticCopy('test')).rejects.toThrow('AI error');

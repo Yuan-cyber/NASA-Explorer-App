@@ -3,8 +3,10 @@ import Apod from './Apod';
 import * as DataContext from '../context/DataContext';
 import * as api from '../api';
 
+// Mock the API module for AI poetic copy
 jest.mock('../api');
 
+// Mock APOD data for context
 const mockApodData = {
   title: "Test Title",
   date: "2025-06-25",
@@ -13,8 +15,10 @@ const mockApodData = {
   url: "https://test.com/image.png"
 };
 
+// Test suite for the Apod page component
 describe('Apod page', () => {
   beforeEach(() => {
+    // Mock useNasaData to provide APOD data and loading/error state
     jest.spyOn(DataContext, 'useNasaData').mockReturnValue({
       apodData: mockApodData,
       loading: false,
@@ -22,6 +26,9 @@ describe('Apod page', () => {
     });
   });
 
+  /**
+   * Should render APOD title, explanation, and image
+   */
   it('renders APOD data', () => {
     render(<Apod />);
     expect(screen.getByText(/Test Title/)).toBeInTheDocument();
@@ -29,6 +36,9 @@ describe('Apod page', () => {
     expect(screen.getByRole('img')).toHaveAttribute('src', mockApodData.url);
   });
 
+  /**
+   * Should show AI poetic copy after clicking the button
+   */
   it('shows AI poetic copy after button click', async () => {
     api.generatePoeticCopy.mockResolvedValue('A poetic line!');
     render(<Apod />);

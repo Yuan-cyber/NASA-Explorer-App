@@ -97,6 +97,14 @@ npm start
 
 The frontend will start on http://localhost:3000 by default.
 
+## Usage
+
+- Use the navigation bar to switch between Home, APOD, EPIC, and NeoWs pages.
+- **On the Home page**, you can also click directly on the APOD image, the latest Earth photo, or the asteroid card to quickly enter the corresponding page.
+- On the APOD page, click “✨Turn This Into Poetry✨” to generate a poetic caption.
+- On the EPIC page, select any date to view Earth images for that day, and click “Animate” to play the sequence.
+- On the NeoWs page, click on a date to see that day's asteroid list.
+
 ## API Endpoints
 
 - /api/apod — Get Astronomy Picture of the Day
@@ -116,14 +124,6 @@ npm test
 
 cd ../frontend
 npm test
-
-## Usage
-
-- Use the navigation bar to switch between Home, APOD, EPIC, and NeoWs pages.
-- **On the Home page**, you can also click directly on the APOD image, the latest Earth photo, or the asteroid card to quickly enter the corresponding page.
-- On the APOD page, click “✨Turn This Into Poetry✨” to generate a poetic caption.
-- On the EPIC page, select any date to view Earth images for that day, and click “Animate” to play the sequence.
-- On the NeoWs page, click on a date to see that day's asteroid list.
 
 ## Error Handling & Edge Cases
 

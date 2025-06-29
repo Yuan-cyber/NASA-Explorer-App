@@ -47,7 +47,6 @@
 }
 .info-message {
   color: #888;
-  
 }
 
 /* EPIC Grid */
@@ -85,12 +84,6 @@
   margin: 0;
 }
 
-/* NeoWs Chart */
-.chart-container {
-  width: 100%;
-  height: 400px;
-}
-
 .charts-row {
   display: flex;
   gap: 32px;
@@ -118,7 +111,7 @@
 .day-card {
   background: #fff;
   border-radius: 8px;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
   padding: 2rem 2.5rem;
   box-shadow: 0 4px 24px rgba(80,120,200,0.10);
   transition: box-shadow 0.2s;
@@ -126,6 +119,7 @@
 .day-card:hover {
   box-shadow: 0 8px 32px rgba(80,120,200,0.16);
 }
+
 .asteroid-list {
   display: flex;
   flex-direction: column;
@@ -135,6 +129,7 @@
 .hazardous {
   color: #d9534f;
 }
+
 .modal-backdrop {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -239,6 +234,10 @@
 }
 
 /* EPIC Page Styles */
+.epic-card {
+  padding: 24px;
+  margin-bottom: 32px;
+}
 .date-picker-container {
   display: flex;
   align-items: center;
@@ -323,6 +322,12 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 16px #e0c3fc88;
 }
+.main-button:disabled,
+.main-button:disabled:hover {
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
 .animation-player {
   text-align: center;
 }
@@ -360,6 +365,10 @@
   100% { transform: translateY(0) rotate(-45deg);}
 }
 
+.neows-container {
+  padding: 32px 24px 24px 24px;
+}
+
 @media (max-width: 768px) {
   .card-title {
     font-size: 1.1rem;
@@ -388,7 +397,6 @@
   }
   .epic-card {
     padding: 10px;
-    border-radius: 8px;
   }
   .date-picker-container {
     flex-direction: column;
@@ -432,6 +440,7 @@
   .charts-row {
     flex-direction: column;
     gap: 12px;
+    margin-bottom: 12px;
   }
   .chart-card {
     padding: 1rem 0.5rem;
@@ -442,7 +451,7 @@
   .day-card {
     padding: 1rem 0.5rem;
     border-radius: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .asteroid-list {
     gap: 8px;
@@ -469,7 +478,4 @@
   }
 }
 
-.neows-container {
-  padding: 32px 24px 24px 24px;
-}
 
