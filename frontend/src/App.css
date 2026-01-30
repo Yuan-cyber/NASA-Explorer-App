@@ -109,7 +109,8 @@ body::before {
   margin: 40px auto 40px auto;
   background: var(--card);
   border-radius:8px;
-  min-height: 600px;
+  /* Let the card height follow page content (prevents large empty space on shorter pages). */
+  min-height: 0;
   position: relative;
   z-index: 1;
 }

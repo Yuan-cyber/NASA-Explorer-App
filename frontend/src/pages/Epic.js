@@ -10,12 +10,18 @@ import './Page.css';
  */ 
 const Epic = () => {
   // Get initial EPIC data, loading, and error state from context
-  const { epicData: initialEpicData, loading: initialLoading, error: initialError } = useNasaData();
+  const { 
+    epicData: initialEpicData, 
+    loading: initialLoading, 
+    error: globalError,
+    epicError: initialEpicError
+  } = useNasaData();
   
   // Local state for EPIC images, loading, error, and selected date
   const [images, setImages] = useState(initialEpicData || []);
   const [loading, setLoading] = useState(initialLoading);
-  const [error, setError] = useState(initialError);
+  // Initialize error with EPIC-specific error or global error
+  const [error, setError] = useState(initialEpicError || globalError);
   const [selectedDate, setSelectedDate] = useState(new Date());
   
   // State for the animation logic
@@ -34,8 +40,12 @@ const Epic = () => {
       .then(res => {
         console.log('fetchEpic result:', res.data);
         setImages(res.data);
+        setError(null); // Clear error on success
       })
-      .catch(err => setError("Failed to fetch EPIC images for this date."))
+      .catch(err => {
+        console.error('EPIC date fetch failed:', err);
+        setError("EPIC Earth images are temporarily unavailable for this date. This is likely a NASA EPIC service issue, not your network. Please try another date or come back later.");
+      })
       .finally(() => setLoading(false));
   }, [selectedDate]);
 

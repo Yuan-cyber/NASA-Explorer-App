@@ -26,6 +26,10 @@ export const NasaDataProvider = ({ children }) => {
   const [epicData, setEpicData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Individual error states for each API
+  const [apodError, setApodError] = useState(null);
+  const [neowsError, setNeowsError] = useState(null);
+  const [epicError, setEpicError] = useState(null);
 
   // Fetch all NASA data in parallel when the provider mounts
   useEffect(() => {
@@ -33,21 +37,55 @@ export const NasaDataProvider = ({ children }) => {
       try {
         setLoading(true);
         setError(null);
+        // Reset individual errors
+        setApodError(null);
+        setNeowsError(null);
+        setEpicError(null);
 
-        // Fetch APOD, NeoWs, and EPIC data concurrently
-        const [apodRes, neowsRes, epicRes] = await Promise.all([
+        // Fetch APOD, NeoWs, and EPIC data concurrently using allSettled
+        // This allows partial failures - successful APIs will still return data
+        const results = await Promise.allSettled([
           fetchApod(),
           fetchNeows(),
           fetchEpic()
         ]);
 
-        setApodData(apodRes.data);
-        setNeowsData(neowsRes.data);
-        setEpicData(epicRes.data);
+        const [apodResult, neowsResult, epicResult] = results;
+
+        // Handle APOD result
+        if (apodResult.status === 'fulfilled') {
+          setApodData(apodResult.value.data);
+          setApodError(null);
+        } else {
+          console.error('APOD fetch failed:', apodResult.reason);
+          setApodError("We can’t load today’s APOD right now. NASA’s APOD service may be temporarily unavailable—please try again in a bit.");
+          setApodData(null);
+        }
+
+        // Handle NeoWs result
+        if (neowsResult.status === 'fulfilled') {
+          setNeowsData(neowsResult.value.data);
+          setNeowsError(null);
+        } else {
+          console.error('NeoWs fetch failed:', neowsResult.reason);
+          setNeowsError("We can’t load asteroid data right now. NASA’s NeoWs service may be temporarily unavailable—please try again later.");
+          setNeowsData(null);
+        }
+
+        // Handle EPIC result
+        if (epicResult.status === 'fulfilled') {
+          setEpicData(epicResult.value.data);
+          setEpicError(null);
+        } else {
+          console.error('EPIC fetch failed:', epicResult.reason);
+          setEpicError('EPIC Earth images are temporarily unavailable due to NASA service issues. Please try again later.');
+          setEpicData([]);
+        }
 
       } catch (err) {
+        // This catch handles unexpected errors (like network failures before API calls)
         console.error("Failed to fetch data for the context:", err);
-        setError("One or more NASA APIs failed to respond. Please try again later.");
+        setError("Failed to connect to NASA services. Please check your network and try again.");
       } finally {
         setLoading(false);
       }
@@ -62,7 +100,10 @@ export const NasaDataProvider = ({ children }) => {
     neowsData,
     epicData,
     loading,
-    error
+    error, // Global error (e.g., network failure)
+    apodError, // APOD-specific error
+    neowsError, // NeoWs-specific error
+    epicError // EPIC-specific error
   };
 
   return (

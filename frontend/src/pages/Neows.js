@@ -33,7 +33,7 @@ const CustomDot = (props) => {
 
 // Main Neows page component
 const Neows = () => {
-  const { neowsData, loading, error } = useNasaData();
+  const { neowsData, loading, error, neowsError } = useNasaData();
   const [selectedAsteroid, setSelectedAsteroid] = useState(null);
   const latestNeows = getLatestNeowsData(neowsData);
   const latestDate = latestNeows.date !== 'N/A' ? latestNeows.date : null;
@@ -48,7 +48,9 @@ const Neows = () => {
 
   // Show loader or error if needed
   if (loading) return <Loader />;
+  // Check global error first (network failure), then NeoWs-specific error
   if (error) return <ErrorMessage message={error} />;
+  if (neowsError) return <ErrorMessage message={neowsError} />;
   // Show error if no data
   if (!neowsData || neowsData.length === 0) return <ErrorMessage message="No NeoWs data available." />;
 

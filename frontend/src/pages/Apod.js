@@ -11,7 +11,7 @@ import { generatePoeticCopy } from '../api';
  */
 const Apod = () => {
   // Get APOD data and loading/error state from context
-  const { apodData, loading, error } = useNasaData();
+  const { apodData, loading, error, apodError } = useNasaData();
   // State for AI-generated poetic copy
   const [poeticCopy, setPoeticCopy] = useState('');
   const [copyLoading, setCopyLoading] = useState(false);
@@ -40,7 +40,9 @@ const Apod = () => {
 
   // Show loader or error if needed
   if (loading) return <Loader />;
+  // Check global error first (network failure), then APOD-specific error
   if (error) return <ErrorMessage message={error} />;
+  if (apodError) return <ErrorMessage message={apodError} />;
   if (!apodData) return <ErrorMessage message="No APOD data available." />;
 
   return (

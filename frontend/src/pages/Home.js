@@ -12,12 +12,23 @@ import { getLatestNeowsData } from '../utils/neowsUtils';
  * Users can click on each section to navigate to the corresponding detail page.
  */
 const Home = () => {
-  const { apodData, neowsData, epicData, loading, error } = useNasaData();
+  const { 
+    apodData, 
+    neowsData, 
+    epicData, 
+    loading, 
+    error,
+    apodError,
+    neowsError,
+    epicError
+  } = useNasaData();
 
   const latestNeows = getLatestNeowsData(neowsData);
 
   const latestEpicImage = epicData && epicData.length > 0 ? epicData[epicData.length - 1] : null;
 
+  // Only show global error if it's a critical network failure
+  // Individual API errors will be shown in their respective sections
   if (loading) return <Loader />;
   if (error) return <ErrorMessage message={error} />;
 
@@ -28,11 +39,18 @@ const Home = () => {
         <h2 className="home-block-title">📷 ASTRONOMY PICTURE OF THE DAY <span style={{color:'#888'}}>- APOD</span></h2>
         {/* Clickable block navigates to APOD page */}
         <Link to="/apod" className="home-block apod-block">
-          {apodData && apodData.media_type === 'image' && (
+          {apodError ? (
+            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}>
+              {apodError}
+            </div>
+          ) : apodData && apodData.media_type === 'image' ? (
             <img src={apodData.url} alt={apodData.title} className="home-block-image" />
-          )}
-          {apodData && apodData.media_type === 'video' && (
+          ) : apodData && apodData.media_type === 'video' ? (
             <div className="video-placeholder">Video content, click to view</div>
+          ) : (
+            <div style={{ padding: '16px', textAlign: 'center', color: '#888' }}>
+              No APOD available
+            </div>
           )}
         </Link>
       </div>
@@ -41,15 +59,31 @@ const Home = () => {
         <h2 className="home-block-title">🌍 latest earth photo <span style={{color:'#888'}}>- EPIC</span></h2>
         {/* Clickable block navigates to EPIC page */}
         <Link to="/epic" className="home-block epic-block">
-          {latestEpicImage && <img src={latestEpicImage.url} alt="Latest Earth Photo" className="home-block-image"/>}
+          {epicError ? (
+            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}>
+              {epicError}
+            </div>
+          ) : latestEpicImage ? (
+            <img src={latestEpicImage.url} alt="Latest Earth Photo" className="home-block-image"/>
+          ) : (
+            <div style={{ padding: '16px', textAlign: 'center', color: '#888' }}>
+              No EPIC images available
+            </div>
+          )}
         </Link>
         <h2 className="home-block-title">☄️ Asteroids today <span style={{color:'#888'}}>- NeoWs</span></h2>
         {/* Clickable block navigates to NeoWs page */}
         <Link to="/neows" className="home-block neows-block">
-          <div className="neows-info">
-            <span className="neows-count">{latestNeows.count}</span>
-            <span className="neows-date">on {latestNeows.date}</span>
-          </div>
+          {neowsError ? (
+            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}>
+              {neowsError}
+            </div>
+          ) : (
+            <div className="neows-info">
+              <span className="neows-count">{latestNeows.count}</span>
+              <span className="neows-date">on {latestNeows.date}</span>
+            </div>
+          )}
         </Link>
       </div>
     </div>
