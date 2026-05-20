@@ -73,7 +73,7 @@ const Home = () => {
               </div>
             </div>
           ) : latestEpicImage ? (
-            <img src={latestEpicImage.url} alt="Latest Earth Photo" className="home-block-image"/>
+            <img src={latestEpicImage.url} alt="Latest Earth Photo" className="home-block-image" loading="lazy" />
           ) : (
             <div style={{ padding: '16px', textAlign: 'center', color: '#888' }}>
               No EPIC images available

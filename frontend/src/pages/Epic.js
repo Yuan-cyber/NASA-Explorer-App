@@ -128,12 +128,12 @@ const Epic = () => {
       {!showPlayer ? (
         <>
           <div className="animation-controls">
-            <button 
-              onClick={startAnimation} 
+            <button
+              onClick={startAnimation}
               className="main-button"
-              disabled={!images.length || loading}
+              disabled={!images.length || !preloaded}
             >
-              {preloaded ? 'Animate' : 'Loading Images...'}
+              {!images.length ? 'No Images' : !preloaded ? 'Loading Images...' : 'Animate'}
             </button>
           </div>
           {/* Show image grid if images are available */}
@@ -141,7 +141,7 @@ const Epic = () => {
             <div className="image-grid">
               {images.map(img => (
                 <div key={img.identifier} className="grid-item">
-                  <img src={img.url} alt={img.caption} className="grid-image" />
+                  <img src={img.url} alt={img.caption} className="grid-image" loading="lazy" />
                   <div className="grid-info">
                     <p>{img.caption}</p>
                     <p><b>Date:</b> {new Date(img.date).toLocaleDateString()}</p>
