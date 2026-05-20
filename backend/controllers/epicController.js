@@ -1,5 +1,7 @@
 const axios = require('axios');
-const { NASA_BASE_URL, NASA_API_KEY } = require('../config');
+
+// EPIC API has migrated from api.nasa.gov to epic.gsfc.nasa.gov (no API key required)
+const EPIC_BASE_URL = 'https://epic.gsfc.nasa.gov/api/natural';
 
 // Add cache for EPIC API
 const epicCache = { data: {}, expires: {} };
@@ -18,14 +20,11 @@ exports.getEpic = async (req, res) => {
     ) {
       return res.json(epicCache.data[cacheKey]);
     }
-    // Get the specific date from the request query, if it exists
     const { date: queryDate } = req.query;
 
-    const baseUrl = `${NASA_BASE_URL}/EPIC/api/natural`;
-
     const apiUrl = queryDate
-      ? `${ baseUrl}/date/${queryDate}?api_key=${NASA_API_KEY}`
-      : `${ baseUrl}/images?api_key=${NASA_API_KEY}`;
+      ? `${EPIC_BASE_URL}/date/${queryDate}`
+      : EPIC_BASE_URL;
 
     console.log(apiUrl);
     const { data } = await axios.get(apiUrl);
