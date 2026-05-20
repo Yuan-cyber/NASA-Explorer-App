@@ -30,8 +30,12 @@ export const NasaDataProvider = ({ children }) => {
   const [apodError, setApodError] = useState(null);
   const [neowsError, setNeowsError] = useState(null);
   const [epicError, setEpicError] = useState(null);
+  // Incrementing this triggers a re-fetch of all data
+  const [retryCount, setRetryCount] = useState(0);
 
-  // Fetch all NASA data in parallel when the provider mounts
+  const refetch = () => setRetryCount(c => c + 1);
+
+  // Fetch all NASA data in parallel when the provider mounts (or refetch is called)
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -92,7 +96,7 @@ export const NasaDataProvider = ({ children }) => {
     };
 
     fetchAllData();
-  }, []); // Empty dependency array means this runs only once on mount
+  }, [retryCount]);
 
   // The value provided to all consumers of this context
   const value = {
@@ -100,10 +104,11 @@ export const NasaDataProvider = ({ children }) => {
     neowsData,
     epicData,
     loading,
-    error, // Global error (e.g., network failure)
-    apodError, // APOD-specific error
-    neowsError, // NeoWs-specific error
-    epicError // EPIC-specific error
+    error,
+    apodError,
+    neowsError,
+    epicError,
+    refetch,
   };
 
   return (

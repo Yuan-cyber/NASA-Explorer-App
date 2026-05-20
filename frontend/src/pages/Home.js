@@ -12,15 +12,16 @@ import { getLatestNeowsData } from '../utils/neowsUtils';
  * Users can click on each section to navigate to the corresponding detail page.
  */
 const Home = () => {
-  const { 
-    apodData, 
-    neowsData, 
-    epicData, 
-    loading, 
+  const {
+    apodData,
+    neowsData,
+    epicData,
+    loading,
     error,
     apodError,
     neowsError,
-    epicError
+    epicError,
+    refetch,
   } = useNasaData();
 
   const latestNeows = getLatestNeowsData(neowsData);
@@ -40,8 +41,12 @@ const Home = () => {
         {/* Clickable block navigates to APOD page */}
         <Link to="/apod" className="home-block apod-block">
           {apodError ? (
-            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}>
+            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}
+                 onClick={e => { e.preventDefault(); refetch(); }}>
               {apodError}
+              <div style={{ marginTop: '8px' }}>
+                <button style={{ fontSize: '12px', padding: '4px 12px', cursor: 'pointer' }}>Retry</button>
+              </div>
             </div>
           ) : apodData && apodData.media_type === 'image' ? (
             <img src={apodData.url} alt={apodData.title} className="home-block-image" />
@@ -60,8 +65,12 @@ const Home = () => {
         {/* Clickable block navigates to EPIC page */}
         <Link to="/epic" className="home-block epic-block">
           {epicError ? (
-            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}>
+            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}
+                 onClick={e => { e.preventDefault(); refetch(); }}>
               {epicError}
+              <div style={{ marginTop: '8px' }}>
+                <button style={{ fontSize: '12px', padding: '4px 12px', cursor: 'pointer' }}>Retry</button>
+              </div>
             </div>
           ) : latestEpicImage ? (
             <img src={latestEpicImage.url} alt="Latest Earth Photo" className="home-block-image"/>
@@ -75,8 +84,12 @@ const Home = () => {
         {/* Clickable block navigates to NeoWs page */}
         <Link to="/neows" className="home-block neows-block">
           {neowsError ? (
-            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}>
+            <div className="error-message" style={{ padding: '16px', textAlign: 'center', color: '#d32f2f' }}
+                 onClick={e => { e.preventDefault(); refetch(); }}>
               {neowsError}
+              <div style={{ marginTop: '8px' }}>
+                <button style={{ fontSize: '12px', padding: '4px 12px', cursor: 'pointer' }}>Retry</button>
+              </div>
             </div>
           ) : (
             <div className="neows-info">
